@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raspagem de Links</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .toolbar {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .toolbar a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        .toolbar a:hover {
+            text-decoration: underline;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .sites-pre-salvos {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .sites-pre-salvos h2 {
+            color: #333;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+        .sites-pre-salvos ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .sites-pre-salvos ul li {
+            margin-bottom: 5px;
+            color: #666;
+        }
+        .form-container {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .form-container label {
+            display: block;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .form-container input[type="text"],
+        .form-container select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .form-container button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .form-container button:hover {
+            background-color: #0056b3;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+        .footer a {
+            color: #007bff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="toolbar">
+            <a href="{{ url_for('mostrar_links') }}">Ver Links Salvos</a>
+            <a href="{{ url_for('gerenciar_presalvos') }}">Gerenciar Pré-Salvos</a>
+            <a href="{{ url_for('index') }}">Index</a>
+        </div>
+        <h1>Raspagem de Links</h1>
+        <div class="sites-pre-salvos">
+            <h2>Sites a serem buscados:</h2>
+            <ul>
+                {% for site in sites_pre_salvos %}
+                    <li>{{ site }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="form-container">
+            <form method="post" action="{{ url_for('adicionar_site') }}">
+                <label for="novo_site">Adicionar novo site:</label>
+                <input type="text" id="novo_site" name="novo_site" placeholder="Digite o URL">
+                <button type="submit">Adicionar</button>
+            </form>
+        </div>
+        <div class="form-container">
+            <form method="post" action="{{ url_for('remover_site') }}">
+                <label for="site_a_remover">Remover site:</label>
+                <select id="site_a_remover" name="site_a_remover">
+                    {% for site in sites_pre_salvos %}
+                        <option value="{{ site }}">{{ site }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit">Remover</button>
+            </form>
+        </div>
+        <form method="post">
+            <button type="submit">Raspar Links</button>
+        </form>
+        <div class="footer">
+            <p>Desenvolvido por: <a href="#">Yul</a></p>
+        </div>
+    </div>
+</body>
+</html>
