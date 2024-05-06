@@ -4,50 +4,12 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Raspagem de Links</title>
-        <style>
-            .sites-pre-salvos {
-                border: 1px solid #ccc;
-                padding: 10px;
-                margin-bottom: 20px;
-            }
-            .sites-pre-salvos ul {
-                list-style-type: none;
-                padding: 0;
-            }
-            .sites-pre-salvos ul li {
-                margin-bottom: 5px;
-            }
-        </style>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     </head>
     <body>
-        <h1>Raspagem de Links</h1>
-        <div class="sites-pre-salvos">
-            <h2>Pré-salvos:</h2>
-            <ul>
-                {% for site in sites_pre_salvos %}
-                    <li>{{ site }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-        <form method="post" action="{{ url_for('adicionar_site') }}">
-            <label for="novo_site">Adicionar novo site pré-salvo:</label>
-            <input type="text" id="novo_site" name="novo_site">
-            <button type="submit">Adicionar</button>
-        </form>
-        <form method="post" action="{{ url_for('remover_site') }}">
-            <label for="site_a_remover">Remover site pré-salvo:</label>
-            <select id="site_a_remover" name="site_a_remover">
-                {% for site in sites_pre_salvos %}
-                    <option value="{{ site }}">{{ site }}</option>
-                {% endfor %}
-            </select>
-            <button type="submit">Remover</button>
-        </form>
-        <a href="{{ url_for('mostrar_links') }}">Ver Links Salvos</a>
-        <a href="{{ url_for('gerenciar_presalvos') }}">Gerenciar Pre Salvos</a>
-    
-        <form method="post">
-            <button type="submit">Raspar Links</button>
-        </form>
+        <!-- Menu adicionado em todas as páginas-->
+        {% include 'menu.html' %}
+
+        
     </body>
 </html>

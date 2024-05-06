@@ -7,11 +7,14 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
     <script>
         $(document).ready(function() {
             $('#links_table').DataTable();
         });
     </script>
+<!--
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -68,32 +71,32 @@
             width: 200px;
         }
     </style>
+-->
 </head>
 <body>
-
-    <div class="toolbar">
-        <a href="{{ url_for('mostrar_links') }}">Ver Links Salvos</a>
-        <a href="{{ url_for('gerenciar_presalvos') }}">Gerenciar Pré-Salvos</a>
-        <a href="{{ url_for('index') }}">Index</a>
-    </div>
     <div class="container">
-        <h1>Links Salvos</h1>
-        <table id="links_table">
-            <thead>
-                <tr>
-                    <th>URL</th>
-                    <th>Data e Hora</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for link in links %}
-                <tr>
-                    <td><a href="{{ link[1] }}" target="_blank">{{ link[1] }}</a></td>
-                    <td>{{ link[2] }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <!-- Menu adicionado em todas as páginas-->
+        {% include 'menu.html' %}
+        
+        <div class="container">
+            <h1>Links Salvos</h1>
+            <table id="links_table">
+                <thead>
+                    <tr>
+                        <th>URL</th>
+                        <th>Data e Hora</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for link in links %}
+                    <tr>
+                        <td><a href="{{ link[1] }}" target="_blank">{{ link[1] }}</a></td>
+                        <td>{{ link[2] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </body>
 </html>
