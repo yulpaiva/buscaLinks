@@ -65,6 +65,8 @@ h3 li a {
 
 table {
     width: 100%;
+    
+    max-height: 60vh;
     border-collapse: collapse;
     background-color: #fff;
     border: 1px solid #ddd;
