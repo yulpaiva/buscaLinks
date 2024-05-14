@@ -9,41 +9,45 @@
 
 <body>
     <div class="container">
-        <!-- Menu adicionado em todas as páginas-->
-        {% include 'menu.html' %}
-        <h1>Raspagem de Links</h1>
-        <div class="sites-pre-salvos">
-            <h2>Sites a serem buscados:</h2>
-            <ul>
-                {% for site in sites_pre_salvos %}
-                    <li>{{ site }}</li>
-                {% endfor %}
-            </ul>
+        <div class="menu">
+            {% include 'menu.html' %}
         </div>
-        <div class="form-container">
-            <form method="post" action="{{ url_for('adicionar_site') }}">
-                <label for="novo_site">Adicionar novo site:</label>
-                <input type="text" id="novo_site" name="novo_site" placeholder="Digite o URL">
-                <button type="submit">Adicionar</button>
-            </form>
+
+        <div class="conteudo">
+            <div class="blocos">
+                <div class="form-container-buscados">
+                    <h1>Sites a serem buscados:</h1>
+                    <ul>
+                        {% for site in sites_pre_salvos %}
+                            <h3><li><a href="{{ site }}">{{ site }}</li></a></h3>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="form-container">
+                    <form method="post" action="{{ url_for('adicionar_site') }}">
+                        <label for="novo_site">Adicionar novo site:</label>
+                        <input type="text" id="novo_site" name="novo_site" placeholder="Digite o URL">
+                        <button type="submit">Adicionar</button>
+                    </form>
+                    <form method="post" action="{{ url_for('remover_site') }}">
+                        <label for="site_a_remover">Remover site:</label>
+                        <select id="site_a_remover" name="site_a_remover">
+                            {% for site in sites_pre_salvos %}
+                                <option value="{{ site }}">{{ site }}</option>
+                            {% endfor %}
+                        </select>
+                        <button type="submit">Remover</button>
+                    </form>
+                    <form class="form-container" method="post">
+                        <button type="submit">Raspar Links</button>
+                    </form>
+                </div>
+
+            </div>
+            
         </div>
-        <div class="form-container">
-            <form method="post" action="{{ url_for('remover_site') }}">
-                <label for="site_a_remover">Remover site:</label>
-                <select id="site_a_remover" name="site_a_remover">
-                    {% for site in sites_pre_salvos %}
-                        <option value="{{ site }}">{{ site }}</option>
-                    {% endfor %}
-                </select>
-                <button type="submit">Remover</button>
-            </form>
-        </div>
-        <form method="post">
-            <button type="submit">Raspar Links</button>
-        </form>
-        <div class="footer">
-            <p>Desenvolvido por: <a href="#">Yul</a></p>
-        </div>
+        
     </div>
+    
 </body>
 </html>

@@ -19,7 +19,6 @@ def obter_links(url):
         return []
 
 # Função para salvar os links no banco de dados com a data e hora
-# Função para salvar os links no banco de dados com a data e hora
 def salvar_links_bd(links):
     conn = sqlite3.connect('links.db')
     c = conn.cursor()
@@ -147,8 +146,7 @@ def remover_presalvo(id):
     c.execute("DELETE FROM sites_pre_salvos WHERE id = ?", (id,))
     conn.commit()
     conn.close()
-    return redirect(url_for('gerenciar_presalvos'))
-
+    
 
 if __name__ == '__main__':
     app.run(debug=True)
