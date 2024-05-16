@@ -16,30 +16,52 @@
     </script>
 
 </head>
+
 <body>
     <div class="container">
-        <!-- Menu adicionado em todas as páginas-->
-        {% include 'menu.html' %}
-        
-        <div class="container">
-            
-            <table id="links_table">
-                <thead>
-                    <tr>
-                        <th>URL</th>
-                        <th>Data e Hora</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for link in links %}
-                    <tr>
-                        <td><a href="{{ link[1] }}" target="_blank">{{ link[1] }}</a></td>
-                        <td>{{ link[2] }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        <div class="menu">
+            {% include 'menu.html' %}
         </div>
+
+        <div class="conteudo">
+            <div class="blocos">
+
+
+                <!--Table antiga
+                <div class="form-container-buscados">
+                    <h1>Sites a serem buscados:</h1>
+                    <ul>
+                        {% for site in sites_pre_salvos %}
+                            <h3><li><a href="{{ site }}">{{ site }}</li></a></h3>
+                        {% endfor %}
+                    </ul>
+                </div> -->
+
+                <!--Nova ta bela inicio-->
+                <table id="links_table">
+                    <thead>
+                        <tr>
+                            <th>URL</th>
+                            <th>Data e Hora</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for link in links %}
+                        <tr>
+                            <td><a href="{{ link[1] }}" target="_blank">{{ link[1] }}</a></td>
+                            <td>{{ link[2] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <!--Nova tabela fim-->
+            </div>
+            
+        </div>
+        
     </div>
+    
 </body>
+
 </html>

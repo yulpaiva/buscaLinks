@@ -110,9 +110,11 @@ def obter_presalvos():
     conn.close()
     return [presalvo[1] for presalvo in presalvos]  # Retorna apenas os sites, não os IDs
 
-
 # Atualizar a lista de sites pré-salvos ao iniciar o aplicativo
 sites_pre_salvos = obter_presalvos()
+
+
+
 
 
 
@@ -146,7 +148,8 @@ def remover_presalvo(id):
     c.execute("DELETE FROM sites_pre_salvos WHERE id = ?", (id,))
     conn.commit()
     conn.close()
-    
+    return redirect(url_for('gerenciar_presalvos'))
+
 
 if __name__ == '__main__':
     app.run(debug=True)
