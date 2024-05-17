@@ -99,57 +99,6 @@ def remover_site():
     sites_pre_salvos.remove(site_a_remover)
     return redirect(url_for('index'))
 
-# Função para obter os pré-salvos do banco de dados
-def obter_presalvos():
-    conn = sqlite3.connect('sites_pre_salvos.db')
-    c = conn.cursor()
-    # Verifica se a tabela já existe, se não, cria
-    c.execute("CREATE TABLE IF NOT EXISTS sites_pre_salvos (id INTEGER PRIMARY KEY AUTOINCREMENT, site TEXT)")
-    c.execute("SELECT * FROM sites_pre_salvos")
-    presalvos = c.fetchall()
-    conn.close()
-    return [presalvo[1] for presalvo in presalvos]  # Retorna apenas os sites, não os IDs
-
-# Atualizar a lista de sites pré-salvos ao iniciar o aplicativo
-sites_pre_salvos = obter_presalvos()
-
-
-
-
-
-
-# Rota para adicionar um novo pré-salvo
-@app.route('/adicionar_presalvo', methods=['POST'])
-def adicionar_presalvo():
-    novo_presalvo = request.form['novo_presalvo']
-    conn = sqlite3.connect('sites_pre_salvos.db')
-    c = conn.cursor()
-    c.execute("INSERT INTO sites_pre_salvos (site) VALUES (?)", (novo_presalvo,))
-    conn.commit()
-    conn.close()
-    return redirect(url_for('gerenciar_presalvos'))
-
-# Rota para editar um pré-salvo
-@app.route('/editar_presalvo/<int:id>', methods=['POST'])
-def editar_presalvo(id):
-    novo_site = request.form['novo_site']
-    conn = sqlite3.connect('sites_pre_salvos.db')
-    c = conn.cursor()
-    c.execute("UPDATE sites_pre_salvos SET site = ? WHERE id = ?", (novo_site, id))
-    conn.commit()
-    conn.close()
-    return redirect(url_for('gerenciar_presalvos'))
-
-# Rota para remover um pré-salvo
-@app.route('/remover_presalvo/<int:id>', methods=['POST'])
-def remover_presalvo(id):
-    conn = sqlite3.connect('sites_pre_salvos.db')
-    c = conn.cursor()
-    c.execute("DELETE FROM sites_pre_salvos WHERE id = ?", (id,))
-    conn.commit()
-    conn.close()
-    return redirect(url_for('gerenciar_presalvos'))
-
 
 if __name__ == '__main__':
     app.run(debug=True)
