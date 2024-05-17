@@ -3,19 +3,22 @@ import requests
 from bs4 import BeautifulSoup
 import sqlite3
 import datetime
+import os
 
 app = Flask(__name__)
-sites_pre_salvos = []  # Lista de sites pré-salvos
 
 # Função para realizar a raspagem dos links de um site
 def obter_links(url):
-    resposta = requests.get(url)
-    if resposta.status_code == 200:
-        soup = BeautifulSoup(resposta.text, 'html.parser')
-        links = soup.find_all('a')
-        urls = [link.get('href') for link in links if link.get('href')]
-        return urls
-    else:
+    try:
+        resposta = requests.get(url)
+        if resposta.status_code == 200:
+            soup = BeautifulSoup(resposta.text, 'html.parser')
+            links = soup.find_all('a')
+            urls = [link.get('href') for link in links if link.get('href')]
+            return urls
+        else:
+            return []
+    except requests.exceptions.RequestException:
         return []
 
 # Função para salvar os links no banco de dados com a data e hora
@@ -44,8 +47,6 @@ def salvar_links_bd(links):
     finally:
         conn.close()
 
-
-
 # Função para obter os links salvos do banco de dados
 def obter_links_bd():
     conn = sqlite3.connect('links.db')
@@ -59,25 +60,25 @@ def obter_links_bd():
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        all_links = []
-        for url in sites_pre_salvos:
-            links = obter_links(url)
-            all_links.extend(links)
-        salvar_links_bd(all_links)
+        novo_site = request.form['novo_site']
+        salvar_links_bd(obter_links(novo_site))
         return redirect(url_for('mostrar_links'))
-    return render_template('index.html', sites_pre_salvos=sites_pre_salvos)
+    return render_template('index.html', sites_pre_salvos=obter_sites_pre_salvos())
 
-# Rota para a pagina pre salvos
-@app.route('/gerenciar_presalvos', methods=['GET', 'POST'])
-def gerenciar_presalvos():
-    if request.method == 'POST':
-        all_links = []
-        for url in sites_pre_salvos:
-            links = obter_links(url)
-            all_links.extend(links)
-        salvar_links_bd(all_links)
-        return redirect(url_for('gerenciar_presalvos'))
-    return render_template('gerenciar_presalvos.html', sites_pre_salvos=sites_pre_salvos)
+# Função para obter os sites pré-salvos do banco de dados
+def obter_sites_pre_salvos():
+    if not os.path.exists('sites_pre_salvos.db'):
+        conn = sqlite3.connect('sites_pre_salvos.db')
+        c = conn.cursor()
+        c.execute('''CREATE TABLE sites (id INTEGER PRIMARY KEY AUTOINCREMENT, site TEXT)''')
+        conn.commit()
+        conn.close()
+    conn = sqlite3.connect('sites_pre_salvos.db')
+    c = conn.cursor()
+    c.execute("SELECT * FROM sites")
+    rows = c.fetchall()
+    conn.close()
+    return [row[1] for row in rows]
 
 # Rota para a página de links salvos
 @app.route('/links')
@@ -89,16 +90,23 @@ def mostrar_links():
 @app.route('/adicionar_site', methods=['POST'])
 def adicionar_site():
     novo_site = request.form['novo_site']
-    sites_pre_salvos.append(novo_site)
+    conn = sqlite3.connect('sites_pre_salvos.db')
+    c = conn.cursor()
+    c.execute("INSERT INTO sites (site) VALUES (?)", (novo_site,))
+    conn.commit()
+    conn.close()
     return redirect(url_for('index'))
 
 # Rota para remover um site pré-salvo
 @app.route('/remover_site', methods=['POST'])
 def remover_site():
     site_a_remover = request.form['site_a_remover']
-    sites_pre_salvos.remove(site_a_remover)
+    conn = sqlite3.connect('sites_pre_salvos.db')
+    c = conn.cursor()
+    c.execute("DELETE FROM sites WHERE site=?", (site_a_remover,))
+    conn.commit()
+    conn.close()
     return redirect(url_for('index'))
-
 
 if __name__ == '__main__':
     app.run(debug=True)

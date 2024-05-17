@@ -5,16 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Links Salvos</title>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/fixedheader/3.1.9/css/fixedHeader.dataTables.min.css">
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.1.9/js/dataTables.fixedHeader.min.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
     <script>
         $(document).ready(function() {
-            $('#links_table').DataTable();
+            var table = $('#links_table').DataTable({
+                fixedHeader: true // Ativar o cabeçalho fixo
+            });
         });
     </script>
 
+    <style>
+        /* Estilo para a div que envolve a tabela */
+        .table-container {
+            max-height: 800px; /* Altura máxima da tabela */
+            overflow-y: auto; /* Adiciona barra de rolagem vertical quando necessário */
+        }
+    </style>
 </head>
 
 <body>
@@ -25,43 +36,29 @@
 
         <div class="conteudo">
             <div class="blocos">
-
-
-                <!--Table antiga
-                <div class="form-container-buscados">
-                    <h1>Sites a serem buscados:</h1>
-                    <ul>
-                        {% for site in sites_pre_salvos %}
-                            <h3><li><a href="{{ site }}">{{ site }}</li></a></h3>
-                        {% endfor %}
-                    </ul>
-                </div> -->
-
-                <!--Nova ta bela inicio-->
-                <table id="links_table">
-                    <thead>
-                        <tr>
-                            <th>URL</th>
-                            <th>Data e Hora</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for link in links %}
-                        <tr>
-                            <td><a href="{{ link[1] }}" target="_blank">{{ link[1] }}</a></td>
-                            <td>{{ link[2] }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-
-                <!--Nova tabela fim-->
+                <!-- Div que envolve a tabela com a classe table-container -->
+                <div class="table-container">
+                    <!--Nova tabela -->
+                    <table id="links_table">
+                        <thead>
+                            <tr>
+                                <th>URL</th>
+                                <th>Data e Hora</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for link in links %}
+                            <tr>
+                                <td><a href="{{ link[1] }}" target="_blank">{{ link[1] }}</a></td>
+                                <td>{{ link[2] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Fim da div table-container -->
             </div>
-            
         </div>
-        
     </div>
-    
 </body>
-
 </html>
