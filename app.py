@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 import sqlite3
 import datetime
 import os
+import logging
 
 app = Flask(__name__)
 
@@ -56,14 +57,17 @@ def obter_links_bd():
     conn.close()
     return rows
 
-# Rota para a página inicial
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        novo_site = request.form['novo_site']
-        salvar_links_bd(obter_links(novo_site))
+        sites_pre_salvos = obter_sites_pre_salvos()
+        for site in sites_pre_salvos:
+            salvar_links_bd(obter_links(site))
         return redirect(url_for('mostrar_links'))
     return render_template('index.html', sites_pre_salvos=obter_sites_pre_salvos())
+
+
 
 # Função para obter os sites pré-salvos do banco de dados
 def obter_sites_pre_salvos():
