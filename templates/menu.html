@@ -1,43 +1,67 @@
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp">
-<aside>
-    <div class="sidebar">
-        <a href="{{ url_for('index') }}" class="active">
-            <span class="material-icons-sharp">grid_view</span>
-            <h3>Página Inicial</h3>
-        </a>
-        <a href="{{ url_for('mostrar_links') }}">
-            <span class="material-icons-sharp">receipt_long</span>
-            <h3>Links</h3>
-        </a>
-        <a href="#">
-            <span class="material-icons-sharp">insights</span>
-            <h3>Option 1</h3>
-        </a>
-        <a href="#">
-            <span class="material-icons-sharp">mail_outline</span>
-            <h3>Option 2</h3>
-            <span class="message-count">26</span>
-        </a>
-        <a href="#">
-            <span class="material-icons-sharp">inventory</span>
-            <h3>Option 3</h3>
-        </a>
-        <a href="#">
-            <span class="material-icons-sharp">report_gmailerrorred</span>
-            <h3>Option 4</h3>
-        </a>
-        <a href="#">
-            <span class="material-icons-sharp">settings</span>
-            <h3>Option 5</h3>
-        </a>
-        <a href="#">
-            <span class="material-icons-sharp">add</span>
-            <h3>Option 6</h3>
-        </a>
-        <a href="#">
-            <span class="material-icons-sharp">logout</span>
-            <h3>Option 7</h3>
-        </a>
-    </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp">
+    <title>Document</title>
 
-</aside>
+<body>
+    <aside>
+        <div class="sidebar">
+            <a href="{{ url_for('index') }}" class="active">
+                <span class="material-icons-sharp">grid_view</span>
+                <h3>Página Inicial</h3>
+            </a>
+            <a href="{{ url_for('mostrar_links') }}">
+                <span class="material-icons-sharp">receipt_long</span>
+                <h3>Links</h3>
+            </a>
+            <a href="#">
+                <span class="material-icons-sharp">insights</span>
+                <h3>Option 1</h3>
+            </a>
+            <a href="#">
+                <span class="material-icons-sharp">mail_outline</span>
+                <h3>Option 2</h3>
+                <span class="message-count">26</span>
+            </a>
+            <a href="#">
+                <span class="material-icons-sharp">inventory</span>
+                <h3>Option 3</h3>
+            </a>
+            <a href="#">
+                <span class="material-icons-sharp">report_gmailerrorred</span>
+                <h3>Option 4</h3>
+            </a>
+            <a href="#">
+                <span class="material-icons-sharp">settings</span>
+                <h3>Option 5</h3>
+            </a>
+            <a href="#">
+                <span class="material-icons-sharp">add</span>
+                <h3>Option 6</h3>
+            </a>
+            <a href="#">
+                <span class="material-icons-sharp">logout</span>
+                <h3>Option 7</h3>
+            </a>
+        </div>
+    </aside>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var links = document.querySelectorAll('.sidebar a');
+            var currentUrl = window.location.href;
+
+            links.forEach(function(link) {
+                if (link.href === currentUrl) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
