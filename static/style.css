@@ -71,6 +71,9 @@ table {
     background-color: #fff;
     border: 1px solid #ddd;
 }
+
+
+
 th, td {
     padding: 10px;
     text-align: left;
@@ -96,9 +99,6 @@ r {
 }
 
 .blocos {
-    
-    background-color: #f0f0f0;
-    border: 1px solid #999;
     margin: 20px;
 }
 
