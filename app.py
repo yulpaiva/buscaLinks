@@ -4,8 +4,13 @@ from bs4 import BeautifulSoup
 import sqlite3
 import datetime
 import os
+import threading
+import time
 
 app = Flask(__name__)
+intervalo_raspagem = 60  # Intervalo padrão em segundos
+raspagem_ativa = False
+thread_raspagem = None
 
 # Função para realizar a raspagem dos links de um site
 def obter_links(url):
@@ -25,18 +30,14 @@ def obter_links(url):
 def salvar_links_bd(links):
     conn = sqlite3.connect('links.db')
     c = conn.cursor()
-    # Verifica se a tabela já existe, se não, cria
     c.execute('''CREATE TABLE IF NOT EXISTS links (id INTEGER PRIMARY KEY AUTOINCREMENT, url TEXT, data_hora TEXT)''')
-    # Usando uma transação para inserir os links
     try:
         conn.execute("BEGIN TRANSACTION")
         data_hora_atual = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         for link in links:
-            # Verifica se o link já existe no banco de dados
             c.execute("SELECT * FROM links WHERE url=?", (link,))
             result = c.fetchone()
-            if not result:  # Se o link não existir, insere-o no banco de dados
-                # Verifica se a URL começa com 'http://' ou 'https://'
+            if not result:
                 if not link.startswith('http://') and not link.startswith('https://'):
                     link = 'https://' + link
                 c.execute("INSERT INTO links (url, data_hora) VALUES (?, ?)", (link, data_hora_atual))
@@ -56,18 +57,6 @@ def obter_links_bd():
     conn.close()
     return rows
 
-
-@app.route('/', methods=['GET', 'POST'])
-def index():
-    if request.method == 'POST':
-        sites_pre_salvos = obter_sites_pre_salvos()
-        for site in sites_pre_salvos:
-            salvar_links_bd(obter_links(site))
-        return redirect(url_for('mostrar_links'))
-    return render_template('index.html', sites_pre_salvos=obter_sites_pre_salvos())
-
-
-
 # Função para obter os sites pré-salvos do banco de dados
 def obter_sites_pre_salvos():
     if not os.path.exists('sites_pre_salvos.db'):
@@ -83,19 +72,59 @@ def obter_sites_pre_salvos():
     conn.close()
     return [row[1] for row in rows]
 
-# Rota para a página de links salvos
+# Função de raspagem automática
+def raspagem_automatica():
+    global raspagem_ativa
+    while raspagem_ativa:
+        sites_pre_salvos = obter_sites_pre_salvos()
+        for site in sites_pre_salvos:
+            salvar_links_bd(obter_links(site))
+        time.sleep(intervalo_raspagem)
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    if request.method == 'POST':
+        sites_pre_salvos = obter_sites_pre_salvos()
+        for site in sites_pre_salvos:
+            salvar_links_bd(obter_links(site))
+        return redirect(url_for('mostrar_links'))
+    return render_template('index.html', sites_pre_salvos=obter_sites_pre_salvos(), intervalo_raspagem=intervalo_raspagem)
+
+@app.route('/configurar_intervalo', methods=['POST'])
+def configurar_intervalo():
+    global intervalo_raspagem
+    intervalo = request.form.get('intervalo', type=int)
+    if intervalo and intervalo >= 10:
+        intervalo_raspagem = intervalo
+    return redirect(url_for('index'))
+
+@app.route('/iniciar_raspagem', methods=['POST'])
+def iniciar_raspagem():
+    global raspagem_ativa, thread_raspagem
+    if not raspagem_ativa:
+        raspagem_ativa = True
+        thread_raspagem = threading.Thread(target=raspagem_automatica)
+        thread_raspagem.start()
+    return redirect(url_for('index'))
+
+@app.route('/parar_raspagem', methods=['POST'])
+def parar_raspagem():
+    global raspagem_ativa
+    raspagem_ativa = False
+    if thread_raspagem:
+        thread_raspagem.join()
+    return redirect(url_for('index'))
+
 @app.route('/links')
 def mostrar_links():
     links = obter_links_bd()
     return render_template('mostrar_links.html', links=links)
 
-# Rota para a página princippais
 @app.route('/principais')
 def principais():
     links = obter_links_bd()
     return render_template('principais.html', links=links)
 
-# Rota para adicionar um novo site pré-salvo
 @app.route('/adicionar_site', methods=['POST'])
 def adicionar_site():
     novo_site = request.form['novo_site']
@@ -106,7 +135,6 @@ def adicionar_site():
     conn.close()
     return redirect(url_for('index'))
 
-# Rota para remover um site pré-salvo
 @app.route('/remover_site', methods=['POST'])
 def remover_site():
     site_a_remover = request.form['site_a_remover']
