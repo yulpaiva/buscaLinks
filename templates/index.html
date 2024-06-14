@@ -72,9 +72,29 @@
                     </tbody>
                 </table>
 
-
+                <div class="fomr-container">
+                    <!-- Adicione este código ao seu index.html -->
+                    <h1>Configuração de Raspagem Automática</h1>
+        
+                    <!-- Mostrar intervalo de raspagem configurado -->
+                    <p>Intervalo de Raspagem Atual: {{ intervalo_raspagem }} segundos</p>
+                    
+                    <form action="/configurar_intervalo" method="post">
+                        <label for="intervalo">Intervalo de Raspagem (em segundos):</label>
+                        <input type="number" id="intervalo" name="intervalo" min="10" required>
+                        <input type="submit" value="Configurar Intervalo">
+                    </form>
+                
+                    <form action="/iniciar_raspagem" method="post">
+                        <input type="submit" value="Iniciar Raspagem Automática">
+                    </form>
+                
+                    <form action="/parar_raspagem" method="post">
+                        <input type="submit" value="Parar Raspagem Automática">
+                    </form>
+                </div>
                 <!-- Adicione este código ao seu index.html -->
-                <h1>Configuração de Raspagem</h1>
+                <h1>Configuração de Raspagem Automática</h1>
     
                 <!-- Mostrar intervalo de raspagem configurado -->
                 <p>Intervalo de Raspagem Atual: {{ intervalo_raspagem }} segundos</p>
@@ -92,9 +112,6 @@
                 <form action="/parar_raspagem" method="post">
                     <input type="submit" value="Parar Raspagem Automática">
                 </form>
-
-
-                <!--Nova tabela fim-->
             </div>
             
         </div>
