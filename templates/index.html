@@ -8,55 +8,33 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-
-<script>
-    $(document).ready(function() {
-        $('#links_table').DataTable();
-    });
-</script>
-
 <body>
     <div class="container">
         <div class="menu">
             {% include 'menu.html' %}
         </div>
-
         <div class="conteudo">
-            <div class="blocos">
-                <div class="form-container">
-                    <form method="post" action="{{ url_for('adicionar_site') }}">
-                        <label for="novo_site">Adicionar novo site:</label>
-                        <input type="text" id="novo_site" name="novo_site" placeholder="Digite o URL">
-                        <button type="submit">Adicionar</button>
-                    </form>
-                    <form method="post" action="{{ url_for('remover_site') }}">
-                        <label for="site_a_remover">Remover site:</label>
-                        <select id="site_a_remover" name="site_a_remover">
-                            {% for site in sites_pre_salvos %}
-                                <option value="{{ site }}">{{ site }}</option>
-                            {% endfor %}
-                        </select>
-                        <button type="submit">Remover</button>
-                    </form>
-                    <form method="post" action="{{ url_for('index') }}">
-                        <button type="submit">Raspar Links</button>
-                    </form>                    
-                </div>
-
-
-                <!--Table antiga
-                <div class="form-container-buscados">
-                    <h1>Sites a serem buscados:</h1>
-                    <ul>
+            <div class="form-container">
+                <form method="post" action="{{ url_for('adicionar_site') }}">
+                    <label for="novo_site">Adicionar novo site:</label>
+                    <input type="text" id="novo_site" name="novo_site" placeholder="Digite o URL" required>
+                    <button type="submit">Adicionar</button>
+                </form>
+                <form method="post" action="{{ url_for('remover_site') }}">
+                    <label for="site_a_remover">Remover site:</label>
+                    <select id="site_a_remover" name="site_a_remover" required>
                         {% for site in sites_pre_salvos %}
-                            <h3><li><a href="{{ site }}">{{ site }}</li></a></h3>
+                            <option value="{{ site }}">{{ site }}</option>
                         {% endfor %}
-                    </ul>
-                </div> -->
-
-                <!--Nova ta bela inicio-->
+                    </select>
+                    <button type="submit">Remover</button>
+                </form>
+                <form method="post" action="{{ url_for('index') }}">
+                    <button type="submit">Raspar Links</button>
+                </form>                    
+            </div>
+            <div class="table-container">
                 <table id="links_table">
                     <thead>
                         <tr>
@@ -71,54 +49,29 @@
                         {% endfor %}
                     </tbody>
                 </table>
-
-                <div class="fomr-container">
-                    <!-- Adicione este código ao seu index.html -->
-                    <h1>Configuração de Raspagem Automática</h1>
-        
-                    <!-- Mostrar intervalo de raspagem configurado -->
-                    <p>Intervalo de Raspagem Atual: {{ intervalo_raspagem }} segundos</p>
-                    
-                    <form action="/configurar_intervalo" method="post">
-                        <label for="intervalo">Intervalo de Raspagem (em segundos):</label>
-                        <input type="number" id="intervalo" name="intervalo" min="10" required>
-                        <input type="submit" value="Configurar Intervalo">
-                    </form>
-                
-                    <form action="/iniciar_raspagem" method="post">
-                        <input type="submit" value="Iniciar Raspagem Automática">
-                    </form>
-                
-                    <form action="/parar_raspagem" method="post">
-                        <input type="submit" value="Parar Raspagem Automática">
-                    </form>
-                </div>
-                <!-- Adicione este código ao seu index.html -->
+            </div>
+            <div class="form-container">
                 <h1>Configuração de Raspagem Automática</h1>
-    
-                <!-- Mostrar intervalo de raspagem configurado -->
                 <p>Intervalo de Raspagem Atual: {{ intervalo_raspagem }} segundos</p>
-                
                 <form action="/configurar_intervalo" method="post">
                     <label for="intervalo">Intervalo de Raspagem (em segundos):</label>
                     <input type="number" id="intervalo" name="intervalo" min="10" required>
-                    <input type="submit" value="Configurar Intervalo">
+                    <button type="submit">Configurar Intervalo</button>
                 </form>
-            
                 <form action="/iniciar_raspagem" method="post">
-                    <input type="submit" value="Iniciar Raspagem Automática">
+                    <button type="submit">Iniciar Raspagem Automática</button>
                 </form>
-            
                 <form action="/parar_raspagem" method="post">
-                    <input type="submit" value="Parar Raspagem Automática">
+                    <button type="submit">Parar Raspagem Automática</button>
                 </form>
             </div>
-            
         </div>
-        
     </div>
 
-    
-    
+    <script>
+        $(document).ready(function() {
+            $('#links_table').DataTable();
+        });
+    </script>
 </body>
 </html>
