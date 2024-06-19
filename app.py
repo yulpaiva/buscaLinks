@@ -120,6 +120,11 @@ def mostrar_links():
     links = obter_links_bd()
     return render_template('mostrar_links.html', links=links)
 
+@app.route('/config')
+def config():
+    links = obter_links_bd()
+    return render_template('config.html', links=links)
+
 @app.route('/principais')
 def principais():
     links = obter_links_bd()

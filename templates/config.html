@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raspagem de Links</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="menu">
+            {% include 'menu.html' %}
+        </div>
+        <div class="conteudo">
+            <div class="form-container">
+                <h1>Configuração de Raspagem Automática</h1>
+                <p>Intervalo de Raspagem Atual: {{ intervalo_raspagem }} segundos</p>
+                <form action="/configurar_intervalo" method="post">
+                    <label for="intervalo">Intervalo de Raspagem (em segundos):</label>
+                    <input type="number" id="intervalo" name="intervalo" min="10" required>
+                    <button type="submit">Configurar Intervalo</button>
+                </form>
+                <form action="/iniciar_raspagem" method="post">
+                    <button type="submit">Iniciar Raspagem Automática</button>
+                </form>
+                <form action="/parar_raspagem" method="post">
+                    <button type="submit">Parar Raspagem Automática</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <script>
+        $(document).ready(function() {
+            $('#links_table').DataTable();
+        });
+    </script>
+</body>
+</html>
