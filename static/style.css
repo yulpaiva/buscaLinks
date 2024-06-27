@@ -30,52 +30,59 @@ body {
     margin: 0;
     padding: 0;
     background-color: var(--color-background);
-}
-
-.container {
-    width: 90%;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-h1 {
-    color: var(--color-primary);
-    text-align: center;
-}
-
-.menu {
-    background-color: var(--color-primary);
-    padding: 10px 20px;
-}
-
-.menu ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
     display: flex;
-    justify-content: center;
 }
 
-.menu ul li {
-    margin: 0 15px;
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background-color: var(--color-primary);
+    padding-top: 20px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.menu ul li a {
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+}
+
+.sidebar ul li {
+    width: 100%;
+}
+
+.sidebar ul li a {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
     color: var(--color-white);
     text-decoration: none;
     font-weight: bold;
 }
 
-.menu ul li a:hover {
-    text-decoration: underline;
+.sidebar ul li a i {
+    margin-right: 10px;
 }
 
-.conteudo {
+.sidebar ul li a:hover, .sidebar ul li a.active {
+    background-color: var(--color-primary-variant);
+}
+
+.content {
+    margin-left: 250px;
     padding: 20px;
-    background-color: var(--color-white);
-    border-radius: var(--border-radius-2);
-    box-shadow: var(--box-shadow);
-    margin-top: 20px;
+    width: calc(100% - 250px);
+    background-color: var(--color-background);
+}
+
+h1 {
+    color: var(--color-primary);
+    text-align: center;
 }
 
 .form-container, .table-container {

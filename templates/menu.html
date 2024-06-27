@@ -4,16 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp">
-    <title>Document</title>
-
+    <title>Admin Sidebar Menu</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+</head>
 <body>
-    <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/links">Links Salvos</a></li>
-        <li><a href="/principais">Principais Links</a></li>
-        <li><a href="/config">Configuração</a></li>
-    </ul>
-    
+    <div class="sidebar">
+        <ul>
+            <li><a href="/"><i class="material-icons-sharp">home</i><span>Home</span></a></li>
+            <li><a href="/links"><i class="material-icons-sharp">link</i><span>Links Salvos</span></a></li>
+            <li><a href="/principais"><i class="material-icons-sharp">star</i><span>Principais Links</span></a></li>
+            <li><a href="/config"><i class="material-icons-sharp">settings</i><span>Configuração</span></a></li>
+        </ul>
+    </div>
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
