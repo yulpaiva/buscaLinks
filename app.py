@@ -104,9 +104,6 @@ def iniciar_raspagem():
     if not raspagem_ativa:
         raspagem_ativa = True
         thread_raspagem = threading.Thread(target=raspagem_automatica)
-        thread_raspagem.start()
-    return redirect(url_for('index'))
-
 @app.route('/parar_raspagem', methods=['POST'])
 def parar_raspagem():
     global raspagem_ativa

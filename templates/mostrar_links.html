@@ -22,72 +22,69 @@
         body {
             display: flex;
         }
-    
+
         .container {
             margin-left: 250px;
             padding: 20px;
             width: calc(100% - 250px);
         }
-    
+
         .table-container {
             margin-top: 20px;
         }
-    
+
         table.dataTable thead th, table.dataTable thead td {
             padding: 10px 18px;
             border-bottom: 1px solid #111;
         }
-    
+
         table.dataTable tbody th, table.dataTable tbody td {
             padding: 8px 18px;
             border-bottom: 1px solid #ddd;
         }
-    
+
         table.dataTable tbody tr:hover {
             background-color: #f1f1f1;
         }
-    
+
         .menu {
             margin-bottom: 20px;
         }
-    
+
         .conteudo {
             padding: 20px;
             background-color: #f9f9f9;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
-    
+
         form {
             margin-top: 20px;
         }
-    
+
         form label {
             display: block;
             margin-bottom: 5px;
         }
-    
+
         form input[type="email"], form input[type="submit"] {
             padding: 10px;
             margin-bottom: 10px;
             width: 100%;
             box-sizing: border-box;
         }
-    
+
         form input[type="submit"] {
             background-color: #007BFF;
             color: #fff;
             border: none;
             cursor: pointer;
         }
-    
+
         form input[type="submit"]:hover {
             background-color: #0056b3;
         }
     </style>
-    
-    
-
 
     <script>
         $(document).ready(function() {
@@ -97,14 +94,13 @@
                 buttons: [
                     'copy', 'csv', 'excel', 'pdf', 'print'
                 ],
+                order: [[0, 'desc']], // Ordena pela primeira coluna em ordem decrescente
                 language: {
                     url: "//cdn.datatables.net/plug-ins/1.10.24/i18n/Portuguese-Brasil.json"
                 }
             });
         });
     </script>
-
-    
 </head>
 
 <body>
@@ -113,6 +109,7 @@
             <div class="menu">
                 {% include 'menu.html' %}
             </div>
+        </ul>
     </div>
     <div class="container">
         <div class="conteudo">
@@ -124,7 +121,7 @@
                             <tr>
                                 <th>Indice</th>
                                 <th>Site</th>
-                                <th>Hora</th>
+                                <!--<th>Hora</th>-->
                                 <th>Data</th>
                             </tr>
                         </thead>
@@ -132,8 +129,8 @@
                             {% for link in links %}
                             <tr>
                                 <td>{{ link[0] }}</td>
-                                <td><a>{{ link[1].split(' ')[0] }}</a></td>
-                                <td>{{ link[1].split(' ')[1] }}</td>
+                                <td><a href="{{ link[1].split(' ')[0] | replace('///', '//') }}" target="_blank">{{ link[1].split(' ')[0] | replace('///', '//') }}</a></td>
+                                <!--<td>{{ link[1].split(' ')[1] }}</td> -->
                                 <td>{{ link[2] }}</td>
                             </tr>
                             {% endfor %}
@@ -145,4 +142,3 @@
     </div>
 </body>
 </html>
-
